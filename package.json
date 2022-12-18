@@ -1,0 +1,34 @@
+{
+  "name": "qtvik-news-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon -r dotenv/config src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vicnguyenqt/qtvik-news-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vicnguyenqt/qtvik-news-backend/issues"
+  },
+  "homepage": "https://github.com/vicnguyenqt/qtvik-news-backend#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.15",
+    "@types/node": "^18.11.17",
+    "@types/request-ip": "^0.0.37",
+    "dotenv": "^16.0.3",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "envalid": "^7.3.1",
+    "express": "^4.18.2",
+    "request-ip": "^3.3.0",
+    "winston": "^3.8.2"
+  }
+}
