@@ -9,6 +9,7 @@ const validateEnv = () => {
         //     choices: ['development', 'staging','production'],
         // }),
         PORT: port({ default: 1812 }),
+        DATABASE_URL: str()
     })
 }
 
