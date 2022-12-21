@@ -10,7 +10,7 @@ Qvik-news-service is backend developer assignment
 
 - NodeJS/Typescript as programming language
 - Express as web framework
-- Prisma as ORM for database abstraction & SQL dialect agnostic usage
+- Prisma as ORM for database abstraction
 - SQLite as in memory database for persistence layer
 
 ## Local development
