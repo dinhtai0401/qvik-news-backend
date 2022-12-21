@@ -149,23 +149,21 @@ export const prismaErrorHandle = (
         // Error ref: https://www.prisma.io/docs/reference/api-reference/error-reference
         switch (err.code) {
             case 'P2002':
-                res.status(400).json({
+                return res.status(400).json({
                     status: false,
                     message: errorMsg('duplicate_data')
                 })
                 break
             case 'P2025':
-                res.status(400).json({
+                return res.status(400).json({
                     status: false,
                     message: errorMsg('invalid_data')
                 })
-                break
             default:
-                res.status(500).json({
+                return res.status(500).json({
                     status: false,
                     message: errorMsg('server_error')
                 })
-                break
         }
     }
 
