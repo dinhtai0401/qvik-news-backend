@@ -1,4 +1,11 @@
+// LOAD NODE MODULES
+// ===========================================================================
 import { NextFunction, Request, Response } from 'express'
+import { AnyZodObject, ZodError } from 'zod'
+import { Prisma } from '@prisma/client'
+
+// LOAD OWN MODULES
+// ===========================================================================
 import logger from '../utils/logger'
 import { errorMsg } from '../utils/errors'
 import configs from '../configs'
@@ -100,7 +107,7 @@ export const forceUpgradeHttps = (
 }
 
 export const handleInvalidRequest = (
-    req: Request, 
+    req: Request,
     res: Response
 ) => {
     logger.warn(`Invalid request: ${req.method} ${req.path}`)
@@ -108,4 +115,52 @@ export const handleInvalidRequest = (
         status: false,
         message: errorMsg('not_found'),
     })
+}
+
+export const validate = (
+    schema: AnyZodObject
+) => async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await schema.parseAsync({
+            body: req.body,
+            query: req.query,
+            params: req.params,
+        })
+        return next()
+    } catch (error: ZodError | any) {
+        // return res.status(400).json(error)
+        return res.status(400).json({
+            status: false,
+            message: error.issues,
+        })
+    }
+}
+
+export const prismaErrorHandle = (
+    err: any,
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        logger.error(err)
+        // The .code property can be accessed in a type-safe manner
+        // Error ref: https://www.prisma.io/docs/reference/api-reference/error-reference
+        switch (err.code) {
+            case 'P2002':
+                res.status(400).json({
+                    status: false,
+                    message: errorMsg('duplicate_data')
+                })
+                break
+            default:
+                res.status(500).json({
+                    status: false,
+                    message: errorMsg('server_error')
+                })
+        }
+    }
+
+    next()
+
 }

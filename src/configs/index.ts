@@ -4,6 +4,7 @@ import production from './env/production'
 interface IConfig {
     env: string
     port: number
+    defaultQuerySize: number
     // databaseURL: string
 }
 
@@ -13,6 +14,7 @@ const defaults = {
 
     // DATABASE SETTINGS
     // databaseURL: process.env.DATABASE_URL!,
+    defaultQuerySize: 100
 }
 
 let config: IConfig

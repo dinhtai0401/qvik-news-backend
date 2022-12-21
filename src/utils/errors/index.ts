@@ -13,6 +13,7 @@ const errors: any = {
         msg: 'Method not allowed',
     },
     invalid_data: { code: 'error-invalid-data', msg: 'Invalid data' },
+    duplicate_data: { code: 'error-duplicated-data', msg: 'Duplicated data' },
     invalid_jwt: { code: 'error-invalid-jwt', msg: 'Authentication failed' },
     invalid_file: { code: 'error-invalid-file', msg: 'Invalid upload file' },
     invalid_request: { code: 'error-invalid-request', msg: 'Invalid request' },

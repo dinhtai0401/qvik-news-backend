@@ -2,9 +2,9 @@ import { Application, Router } from 'express'
 
 // CONTROLLERS
 // ===========================================================================
-import channelController from '../controllers/channelController'
-import sourceController from '../controllers/sourceController'
-import articleController from '../controllers/articleController'
+import channelController from '../controllers/channel'
+import sourceController from '../controllers/source'
+import articleController from '../controllers/article'
 
 
 const baseVer1 = '/api/v1'
