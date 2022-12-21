@@ -80,7 +80,7 @@ export const fetchURLInfo = async (url: string): Promise<IURLInfo> => {
     const root = parse(html).querySelector('html')
     if (!root) {
         logger.debug(`getHTMLTitle failed!. Reason: HTML input is empty`)
-        throw { statusCode: 400, code: 'error-invalid-request' }
+        throw { statusCode: 400, type: 'invalid_request' }
     }
 
     const title = getHTMLTitle(root)
@@ -93,3 +93,30 @@ export const fetchURLInfo = async (url: string): Promise<IURLInfo> => {
         published: new Date()
     }
 }
+
+// This function sanitizes a string to prevent SQL injection attacks by replacing
+// special characters with their escaped counterparts.
+export const sanitize = (input: string): string => {
+    // A lookup table that maps special characters to their escaped counterparts.
+    const escapeTable: { [key: string]: string } = {
+        "\0": "\\0",
+        "\x08": "\\b",
+        "\x09": "\\t",
+        "\x1a": "\\z",
+        "\n": "\\n",
+        "\r": "\\r",
+        "\"": "\\\"",
+        "'": "\\'",
+        "\\": "\\\\",
+        "%": "\\%"
+    };
+
+    // Replace special characters in the input string with their escaped counterparts
+    // using a regular expression with the "g" (global) and "y" (sticky) flags.
+    return input.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/gy, (char) => {
+        // Return the escaped character from the lookup table.
+        return escapeTable[char]
+    })
+}
+
+  

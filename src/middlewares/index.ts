@@ -142,8 +142,9 @@ export const prismaErrorHandle = (
     res: Response,
     next: NextFunction
 ) => {
+    logger.error(err)
+
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        logger.error(err)
         // The .code property can be accessed in a type-safe manner
         // Error ref: https://www.prisma.io/docs/reference/api-reference/error-reference
         switch (err.code) {
@@ -167,6 +168,8 @@ export const prismaErrorHandle = (
                 break
         }
     }
+
+    if (err) return next(err)
 
     next()
 

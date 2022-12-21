@@ -12,15 +12,13 @@ export const addArticleValidator = z.object({
 
 export const getAllArticlesValidator = z.object({
     query: z.object({
-        size: z.preprocess(
-            Number,
-            z.number()
-        ).optional()
+        size: z.coerce.number().positive().optional()
     })
 })
 
-export const getArticlesFromChannelValidator = z.object({
-    params: z.object({
-        channelName: z.string()
+export const searchArticlesValidator = z.object({
+    query: z.object({
+        f: z.coerce.number().nonnegative(),
+        t: z.coerce.number().positive(),
     })
 })

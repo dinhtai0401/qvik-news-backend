@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const channelValidator = z.object({
+export const createNewChannelValidator = z.object({
     body: z.object(
         {
             channelName: z.string().min(1).max(30),
@@ -8,4 +8,8 @@ const channelValidator = z.object({
     ),
 })
 
-export default channelValidator
+export const getArticlesFromChannelValidator = z.object({
+    params: z.object({
+        channelName: z.string()
+    })
+})

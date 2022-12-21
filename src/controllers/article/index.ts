@@ -4,13 +4,9 @@ import { Request, Response, Router } from 'express'
 
 // LOAD OWN MODULES
 // ===========================================================================
-// import logger from '../utils/logger'
-
-// LOAD OWN MODULES
-// ===========================================================================
 import * as middleware from '../../middlewares'
-import { getAllArticlesValidator, addArticleValidator, getArticlesFromChannelValidator } from './article.validator'
-import { fetchURLInfo } from '../../helpers'
+import { getAllArticlesValidator, addArticleValidator, searchArticlesValidator } from './article.validator'
+import { fetchURLInfo, sanitize } from '../../helpers'
 import configs from '../../configs'
 
 // LOAD DATABASE
@@ -28,11 +24,9 @@ articleController.get(
         // Get size from the query parameters
         const size = Number(req.query.size) || configs.defaultQuerySize
 
-        // Query the articles, applying pagination and ordering by the published field in descending order
         const articles = await db.article.findMany({
-            // skip: offset,
             take: size,
-            orderBy: { published: 'desc' },
+            orderBy: { published: 'desc' }
         })
 
         res.status(200).json(
@@ -42,32 +36,26 @@ articleController.get(
     })
 )
 
-// Get articles from one channel
+// Search articles from range
 articleController.get(
-    '/:channelName',
-    middleware.validate(getArticlesFromChannelValidator),
+    '/search',
+    middleware.validate(searchArticlesValidator),
     middleware.asyncHandler(async (req: Request, res: Response) => {
 
-        const channelName = req.params.channelName
-        // Get size from the query parameters
-        const size = Number(req.query.size) || configs.defaultQuerySize
+        const fromRange = Number(sanitize(req.query.f as string))
+        const toRange = Number(sanitize(req.query.t as string))
 
-        // Get Channel ID
-        const channelId = await db.channel.findFirst({
-            where: {
-                channelName
-            }
-        })
+        if (toRange <= fromRange) {
+            throw { statusCode: 400, type: 'invalid_data' }
+        }
 
-        if (!channelId) throw { code: 'error-invalid-request' }
-
-        // Query the articles, applying pagination and ordering by the published field in descending order
         const articles = await db.article.findMany({
-            // skip: offset,
-            take: size,
             orderBy: { published: 'desc' },
             where: {
-                channelId: channelId.id
+                contentLength: {
+                    gte: fromRange,
+                    lte: toRange
+                }
             }
         })
 
@@ -78,7 +66,6 @@ articleController.get(
     }),
     middleware.prismaErrorHandle
 )
-
 
 
 // ACTIONS
