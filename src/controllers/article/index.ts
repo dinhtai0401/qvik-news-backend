@@ -101,7 +101,7 @@ articleController.post(
         })
 
         res.status(200).json(
-            { status: 'success', message: 'add-channel-success', data: null }
+            { status: 'success', message: 'add-article-success', data: null }
         )
 
     }),
