@@ -25,6 +25,13 @@ server.use(express.urlencoded({ extended: true }))
 // ROUTES
 routesV1(server)
 
+// ROBOTS / FAVICON.ICO ROUTES
+server.get('/robots.txt', (req, res) => {
+    res.type('text/plain');
+    res.send('User-agent: *\r\nDisallow: /')
+})
+server.get('/favicon.ico', (req, res) => res.status(204).end() )
+
 
 // UTILS FUNCTIONS
 validateEnv()
