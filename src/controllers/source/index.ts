@@ -17,6 +17,7 @@ import db from '../../models'
 
 const sourceChannel: Router = Router()
 
+// Get all sources from database
 sourceChannel.get(
     '/',
     middleware.asyncHandler(async (req: Request, res: Response) => {

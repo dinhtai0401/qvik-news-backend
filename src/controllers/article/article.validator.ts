@@ -10,11 +10,17 @@ export const addArticleValidator = z.object({
     )
 })
 
-export const getArticlesValidator = z.object({
+export const getAllArticlesValidator = z.object({
     query: z.object({
         size: z.preprocess(
             Number,
             z.number()
         ).optional()
+    })
+})
+
+export const getArticlesFromChannelValidator = z.object({
+    params: z.object({
+        channelName: z.string()
     })
 })

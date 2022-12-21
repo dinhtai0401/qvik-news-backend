@@ -17,6 +17,7 @@ import db from '../../models'
 
 const channelController: Router = Router()
 
+// Get all channels from database
 channelController.get(
     '/',
     middleware.asyncHandler(async (req: Request, res: Response) => {
