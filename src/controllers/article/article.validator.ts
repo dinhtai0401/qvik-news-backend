@@ -16,7 +16,7 @@ export const getAllArticlesValidator = z.object({
     })
 })
 
-export const searchArticlesValidator = z.object({
+export const filterArticlesValidator = z.object({
     query: z.object({
         f: z.coerce.number().nonnegative(),
         t: z.coerce.number().positive(),

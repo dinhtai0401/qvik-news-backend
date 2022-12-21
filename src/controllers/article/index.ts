@@ -5,7 +5,7 @@ import { Request, Response, Router } from 'express'
 // LOAD OWN MODULES
 // ===========================================================================
 import * as middleware from '../../middlewares'
-import { getAllArticlesValidator, addArticleValidator, searchArticlesValidator } from './article.validator'
+import { getAllArticlesValidator, addArticleValidator, filterArticlesValidator } from './article.validator'
 import { fetchURLInfo, sanitize } from '../../helpers'
 import configs from '../../configs'
 
@@ -36,10 +36,10 @@ articleController.get(
     })
 )
 
-// Search articles from range
+// Filter articles from range
 articleController.get(
-    '/search',
-    middleware.validate(searchArticlesValidator),
+    '/filter',
+    middleware.validate(filterArticlesValidator),
     middleware.asyncHandler(async (req: Request, res: Response) => {
 
         const fromRange = Number(sanitize(req.query.f as string))
